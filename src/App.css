@@ -4,3 +4,14 @@
     margin-left: -50px !important;  /* 50% of your logo width */
     display: block;
 }
+.border{
+    padding-top: 15%;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+    background-color: white;
+}
+
+.home{
+    background-image: url(./images/home-backgroung.jpg);
+}
