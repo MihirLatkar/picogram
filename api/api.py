@@ -1,11 +1,39 @@
-import time
-from flask import Flask
+from flask import Flask, request, jsonify, make_response
+from flask_sqlalchemy import SQLAlchemy
+import uuid
+from werkzeug.security import generate_password_hash, check_password_hash
+import jwt
+import datetime
+from functools import wraps
 
 app = Flask(__name__)
 
-@app.route('/time')
-def get_current_time():
-    return {'time' : time.time()}
+app.config['SECRET_KEY'] = 'thisissecret'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/c/Users/antho/Documents/api_example/todo.db'
+
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    public_id = db.Column(db.String(50), unique=True)
+    email = db.Column(db.String(50))
+    password = db.Column(db.String(80))
+    admin = db.Column(db.Boolean)
+
+@app.route('/api/login')
+def login():
+    username = request.get_json()['username']
+    password = request.get_json()['password'] 
+    user = User.query.filter_by(username=username).first()
+
+    if user:
+        if check_password_hash(user.password, password):
+           return {'res':'OK','username':username}
+
+    return {'res':'NOT_OK'}
+
+
+
 
 if __name__ == "__main__":
   app.run(debug=True,port=5000)
