@@ -5,19 +5,19 @@ import {
     Route,
     Link
   } from "react-router-dom";
-export default function Login()
+export default function SignUp()
 {
     const [formData, setFormData] = React.useState({
         email: "",
         password: "",
-        showPassword: false
+        confirmPassword: ""
     })
 
     function handleChange(event) {
-        const {name, value, type, checked} = event.target
+        const {name, value} = event.target
         setFormData(prevFormData => ({
             ...prevFormData,
-            [name]: type === "checkbox" ? checked : value
+            [name]: value
         }))
     }
     
@@ -28,10 +28,9 @@ export default function Login()
 
     return (
         <div className='home'>
-            
             <div className='w-25 p-3 container d-flex justify-content-center login mh-100 min-vh-100'>
                 <form className='border align-self-center col'>
-                <h3 id="log">Login</h3> 
+                    <h3 id="log">SignUp</h3> 
                     <div className="mb-3">
                         <label htmlFor="InputEmail1" className="form-label">Email address</label>
                         <input 
@@ -56,28 +55,27 @@ export default function Login()
                             value={formData.password}
                         />
                     </div>
-                    <div className="mb-3 form-check">
+                    <div className="mb-3">
+                        <label htmlFor="InputPassword1" className="form-label">Confirm Password</label>
                         <input 
-                            type="checkbox" 
-                            className="form-check-input" 
-                            id="Check1" 
-                            name='showPassword'
+                            type="password" 
+                            name='confirmPassword'
+                            className="form-control" 
+                            id="confirmPassword1"
                             onChange={handleChange}
-                            checked={formData.showPassword}
+                            value={formData.confirmPassword}
                         />
-                        <label className="form-check-label" htmlFor="Check1">Show password</label>
                     </div>
                     <button 
                         type="submit" 
                         className="btn btn-primary"
                         onClick={handleSubmit} 
                     >
-                    Log In</button>
-                    <Link to="/signup" >
-                         <p>
-                        Don't Have an account? Sign Up
+                    Sign Up</button>
+                    <Link to="/" >
+                        <p> 
+                        Already Have an account? Login
                         </p>
-                        
                     </Link>
                     
                 </form>
