@@ -2,6 +2,13 @@
 import './App.css';
 import Navbar from './components/Navbar'
 import Login from './components/Login'
+import SignUp from './components/SignUp'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
 
 function App() {
   // const [currentTime, setCurrentTime] = useState(0)
@@ -12,13 +19,18 @@ function App() {
   //   })
   // }, [])
   return (
-    <div className="App">
-      <Navbar />
-      <Login />
-      {/* <header className="App-header">
-        <p>current time is {currentTime}.</p>
-      </header> */}
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Login/>} />
+          <Route path="/signup" element={<SignUp/>} />
+        </Routes>
+        {/* <header className="App-header">
+          <p>current time is {currentTime}.</p>
+        </header> */}
+      </div>
+    </Router>
   );
 }
 

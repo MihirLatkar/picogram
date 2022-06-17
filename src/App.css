@@ -1,8 +1,13 @@
+
 .brand {
     position: relative;
     left: 50%;
     margin-left: -50px !important;  /* 50% of your logo width */
     display: block;
+}
+#log{
+    align-content: center;
+    font-weight: 600;
 }
 .border{
     padding-top: 15%;
@@ -14,4 +19,9 @@
 
 .home{
     background-image: url(./images/home-backgroung.jpg);
+}
+.btn{
+    padding: 10px;
+    margin: 10px;
+    margin-left: 0%;
 }
