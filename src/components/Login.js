@@ -1,4 +1,7 @@
+import axios from 'axios'
 import React from 'react'
+import FormLogin from './subComp/FormLogin';
+import User from './subComp/User';
 import {
     BrowserRouter as Router,
     Routes,
@@ -8,7 +11,7 @@ import {
 export default function Login()
 {
     const [formData, setFormData] = React.useState({
-        email: "",
+        username: "",
         password: "",
         showPassword: false
     })
@@ -21,67 +24,40 @@ export default function Login()
         }))
     }
     
+    async function login(user)
+    {
+        const res = await axios.post('api/login',{
+            username: user.username,
+            password: user.password
+        })
+    }
+
+    // const handleLogin = () => {
+        
+    // }
+    const [loggedIn,setLOggedIn] = React.useState(false)
     function handleSubmit(event) {
         event.preventDefault()
         console.log(formData)
+        const user = {
+            username: formData.username,
+            password: formData.password
+        }
+        
+        login(user).then((res) => {
+            if(res.data.res === 'OK')
+            {
+                setLOggedIn(true)
+            }
+            
+        })
     }
 
-    return (
-        <div className='home'>
-            
-            <div className='w-25 p-3 container d-flex justify-content-center login mh-100 min-vh-100'>
-                <form className='border align-self-center col'>
-                <h3 id="log">Login</h3> 
-                    <div className="mb-3">
-                        <label htmlFor="InputEmail1" className="form-label">Email address</label>
-                        <input 
-                            type="email" 
-                            name='email'
-                            className="form-control" 
-                            id="InputEmail1" 
-                            aria-describedby="emailHelp" 
-                            onChange={handleChange}
-                            value={formData.email}
-                        />
-                        <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="InputPassword1" className="form-label">Password</label>
-                        <input 
-                            type="password" 
-                            name='password'
-                            className="form-control" 
-                            id="InputPassword1"
-                            onChange={handleChange}
-                            value={formData.password}
-                        />
-                    </div>
-                    <div className="mb-3 form-check">
-                        <input 
-                            type="checkbox" 
-                            className="form-check-input" 
-                            id="Check1" 
-                            name='showPassword'
-                            onChange={handleChange}
-                            checked={formData.showPassword}
-                        />
-                        <label className="form-check-label" htmlFor="Check1">Show password</label>
-                    </div>
-                    <button 
-                        type="submit" 
-                        className="btn btn-primary"
-                        onClick={handleSubmit} 
-                    >
-                    Log In</button>
-                    <Link to="/signup" >
-                         <p>
-                        Don't Have an account? Sign Up
-                        </p>
-                        
-                    </Link>
-                    
-                </form>
-            </div>
-        </div>
-    )
+    if(!loggedIn) return (
+            <FormLogin 
+            handleSubmit={handleSubmit} 
+            formData={formData} 
+            handleChange={handleChange} />
+        )
+    else return (<User setLOggedIn={setLOggedIn} />)
 }
