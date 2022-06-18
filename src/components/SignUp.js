@@ -4,7 +4,7 @@ import FormSubmit from './subComp/FormSubmit';
 export default function SignUp()
 {
     const [formData, setFormData] = React.useState({
-        email: "",
+        username: "",
         password: "",
         confirmPassword: ""
     })
@@ -17,9 +17,9 @@ export default function SignUp()
         }))
     }
     
-    async function login(user)
+    async function signup(user)
     {
-        const res = await axios.post('api/signup',{
+        const res = await axios.post('/api/signup',{
             username: user.username,
             password: user.password
         })
@@ -41,19 +41,14 @@ export default function SignUp()
             username: formData.username,
             password: formData.password
         }
-        
-        login(user).then((res) => {
+        console.log(user.username)
+        signup(user).then((res) => {
             console.log(res)
             if(res.data.res === 'OK')
             {
                 setDone(true)
             }
         })
-    }
-
-    function handleSubmit(event) {
-        event.preventDefault()
-        console.log(formData)
     }
 
     return(

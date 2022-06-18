@@ -12,10 +12,10 @@ export default function FormSubmit(props)
                 <form className='border align-self-center col'>
                     <h3 id="log">SignUp</h3> 
                     <div className="mb-3">
-                        <label htmlFor="InputEmail1" className="form-label">Email address</label>
+                        <label htmlFor="InputEmail1" className="form-label">User Name</label>
                         <input 
-                            type="email" 
-                            name='email'
+                            type="username" 
+                            name='username'
                             className="form-control" 
                             id="InputEmail1" 
                             aria-describedby="emailHelp" 
