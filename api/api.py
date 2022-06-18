@@ -20,6 +20,10 @@ class User(db.Model):
     password = db.Column(db.String(80))
     admin = db.Column(db.Boolean)
 
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
 @app.route('/api/login', methods=['POST'])
 def login():
     username = request.get_json()['username']
@@ -31,6 +35,17 @@ def login():
            return {'res':'OK','username':username}
 
     return {'res':'NOT_OK'}
+
+@app.route('/api/signup', methods=['POST'])
+def signup():
+    username = request.get_json()['username']
+    password = request.get_json()['password']
+    user = User(username,password)
+    db.session.add(user)
+    db.session.commit()
+    return{'res':'OK','username':username} 
+
+    
 
 if __name__ == "__main__":
   app.run(debug=True,port=5000)
