@@ -32,6 +32,7 @@ export default function Login()
         
     // }
     const [loggedIn,setLOggedIn] = React.useState(false)
+    const [user1,setUsername] = React.useState("")
     function handleSubmit(event) {
         event.preventDefault()
         console.log(formData)
@@ -45,6 +46,7 @@ export default function Login()
             if(res.data.res === 'OK')
             {
                 setLOggedIn(true)
+                setUsername(res.data.username)
             }
             else{
                 console.log("Got something..........")
@@ -58,5 +60,5 @@ export default function Login()
             formData={formData} 
             handleChange={handleChange} />
         )
-    else return (<User setLOggedIn={setLOggedIn} />)
+    else return (<User setLOggedIn={setLOggedIn} user={user1} />)
 }
