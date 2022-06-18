@@ -9,21 +9,21 @@ from functools import wraps
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'thisissecret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/c/Users/antho/Documents/api_example/todo.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
 
 db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     public_id = db.Column(db.String(50), unique=True)
-    email = db.Column(db.String(50))
+    username = db.Column(db.String(50))
     password = db.Column(db.String(80))
     admin = db.Column(db.Boolean)
 
-@app.route('/api/login')
+@app.route('/api/login', methods=['POST'])
 def login():
     username = request.get_json()['username']
-    password = request.get_json()['password'] 
+    password = request.get_json()['password']
     user = User.query.filter_by(username=username).first()
 
     if user:
