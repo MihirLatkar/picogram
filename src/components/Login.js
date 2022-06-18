@@ -1,13 +1,8 @@
 import axios from 'axios'
 import React from 'react'
 import FormLogin from './subComp/FormLogin';
-import User from './subComp/User';
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Link
-  } from "react-router-dom";
+import User from './User';
+
 export default function Login()
 {
     const [formData, setFormData] = React.useState({
