@@ -39,8 +39,14 @@ def login():
 @app.route('/api/signup', methods=['POST'])
 def signup():
     username = request.get_json()['username']
+    known_user=User.query.filter_by(username=username).first()
+    if known_user:
+        return {'res':'NOT_OK'}
+    
     password = request.get_json()['password']
-    user = User(username,password)
+    hashed_password = generate_password_hash(password, method='sha256')
+    user = User(username,hashed_password)
+    
     db.session.add(user)
     db.session.commit()
     return{'res':'OK','username':username} 
