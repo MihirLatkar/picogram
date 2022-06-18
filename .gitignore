@@ -6,6 +6,7 @@
 .pnp.js
 venv
 env
+todo.db
 
 # testing
 /coverage
