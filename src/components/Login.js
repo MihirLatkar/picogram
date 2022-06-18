@@ -30,6 +30,7 @@ export default function Login()
             username: user.username,
             password: user.password
         })
+        return res
     }
 
     // const handleLogin = () => {
@@ -45,11 +46,14 @@ export default function Login()
         }
         
         login(user).then((res) => {
+            console.log(res)
             if(res.data.res === 'OK')
             {
                 setLOggedIn(true)
             }
-            
+            else{
+                console.log("Got something..........")
+            }
         })
     }
 
