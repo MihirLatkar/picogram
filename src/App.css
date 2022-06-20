@@ -31,8 +31,33 @@
     width: 100%;
     background-color: #fafafa;
 }
-.posts{
-    border:5px;
-    background-color: aqua;
+.post{
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 2.98256px 7.4564px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+.post-title{
+    display: flex;
+    padding: 10px;
+    
 }
 
+.post-profile-pic{
+    width: 10%;
+    height: auto;
+    border-radius: 50%;
+}
+.post-content-pic{
+    width: 100%;
+}
+
+.post-likebar{
+    display: flex;
+}
+
+.post-like-pic{
+    width: 6%;
+    height: 6%;
+    border-radius: 50%;
+}
