@@ -25,3 +25,14 @@
     margin: 10px;
     margin-left: 0%;
 }
+
+.user-main{
+    height: 100%;
+    width: 100%;
+    background-color: #fafafa;
+}
+.posts{
+    border:5px;
+    background-color: aqua;
+}
+
