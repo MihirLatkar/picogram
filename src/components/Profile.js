@@ -9,19 +9,19 @@ export default function Profile(props) {
                 <div class="py-4 p-2">
 
                     <div>
-                        <img src="https://i.imgur.com/EnANUqj.jpg" class="rounded" width="100" />
+                        <img src="https://i.imgur.com/EnANUqj.jpg" alt="" class="rounded" width="100" />
                     </div>
                     <div class="mt-3 d-flex flex-row justify-content-center">
                         <h5>Matt Damon</h5>
                         <span class="dots"><i class="fa fa-check"></i></span>
                     </div>
 
-                    <div class="mt-3">
-                    <button type="button" class="btn btn-info">Followers</button>
+                    <div class="mt">
+                    <button type="button" class="btn btn-success">Followers</button>
                         <button class="btn btn-outline-secondary"><i class="fa fa-users"></i> 451</button>
                     </div>
-                    <div class="mt-3">
-                    <button type="button" class="btn btn-info">Following</button>
+                    <div class="mt">
+                    <button type="button" class="btn btn-warning">Following</button>
                         <button class="btn btn-outline-secondary"><i class="fa fa-users"></i> 451</button>
                     </div>
 
@@ -36,10 +36,13 @@ export default function Profile(props) {
                                 <i class="fa fa-angle-right"></i>
                             </div>
                         </li>
+                        <li>
+                            <button type="button" class="btn btn-outline-danger" onClick={props.logOut}>Log Out</button>
+                        </li>
                     </ul>
                 </div>
 
-                <button type="button" class="btn btn-outline-danger" onClick={props.logOut}>Log Out</button>
+                
 
             </div>
 
