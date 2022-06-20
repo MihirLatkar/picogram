@@ -1,15 +1,32 @@
 import React from 'react'
+import Post from './Post'
+import Suggestions from './Suggestions'
+import Profile from './Profile'
 
 export default function User(props) {
-    function help()
-    {
+    function logOut() {
         props.setLOggedIn(false)
     }
     return (
-    <div>
-        <h1>Hello User</h1>
-        <button onClick={help} > Log Out</button>
-    </div>
+        <div className='user-main'>
+            <div class="container mh-100 min-vh-100">
+                <div class="row">
+                    <div class="col" id='sidebar' >
+                        <Profile logOut={logOut} />
+                        
+                    </div>
+                    <div class="col-6 posts" >
+                        <Post />
+                        <Post />
+                        <Post />
+                        <Post />
+                    </div>
+                    <div class="col" id='sidebar' >
+                        <Suggestions />
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 
 }
