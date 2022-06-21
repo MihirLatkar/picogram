@@ -27,6 +27,7 @@ class User(db.Model):
         self.profile_photo = profile_photo
 
 class post(db.Model):
+    postNo = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(50))
     image = db.Column(db.String(500))
     discription = db.Column(db.String(200))
@@ -39,6 +40,7 @@ class post(db.Model):
         self.likes=likes
 
 class followers(db.Model):
+    follower_id=db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(50))
     following_username = db.Column(db.String[50])
      
@@ -100,11 +102,17 @@ def upload_post():
     db.session.commit()
     return{'res':'OK'}
 
-@app.route('/api/login/fetch_post', methods=['POST'])
-def fetch_post():
-    username = request.get_json()['username']
-    
-    return{'res':'OK'}
+#@app.route('/api/login/fetch_post', methods=['POST'])
+#def fetch_post():
+#    username = request.get_json()['username']
+#    Followers = followers.query.filter_by(username = username).all()
+#    for follower in Followers:
+        #
+
+
+
+
+#    return{'res':'OK'}
 
 if __name__ == "__main__":
   app.run(debug=True,port=5000)
