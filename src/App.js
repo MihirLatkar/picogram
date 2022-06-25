@@ -9,8 +9,7 @@ import SignUp from './components/SignUp'
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 
 function App() {
@@ -28,6 +27,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login/>} />
           <Route path="/signup" element={<SignUp/>} />
+          
         </Routes>
         {/* <header className="App-header">
           <p>current time is {currentTime}.</p>
