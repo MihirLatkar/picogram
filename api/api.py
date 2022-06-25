@@ -69,10 +69,7 @@ def signup():
     
     password = request.get_json()['password']
     hashed_password = generate_password_hash(password, method='sha256')
-    profile_photo =request.get_json()['profile_photo']
-    
-    if not profile_photo:
-        profile_photo = '.\images\blank-profile-circle.png'
+    profile_photo = '.\images\blank-profile-circle.png'
 
     user = User(username,hashed_password,profile_photo)
     
@@ -113,6 +110,18 @@ def upload_post():
 
 
 #    return{'res':'OK'}
+
+@app.route('/api/login/user_info',methods=['POST'] )
+def user_info():
+    username = request.get_json()['username']
+    self_user = User.query.filter_by(username=username).first()
+    self_followers = followers.query.filter_by(username=username).all()
+    self_following = followers.query.filter_by(following_username = username).all()
+    self_post = post.query.filter_by(username=username).all()
+    for follow in self_followers:
+        print(follow)
+    print(type(self_followers))
+    return{'res':'OK','profile_photo' : self_user.profile_photo, 'self_followers' : self_followers, 'self_following' :self_following , 'self_post':self_post } 
 
 if __name__ == "__main__":
   app.run(debug=True,port=5000)
