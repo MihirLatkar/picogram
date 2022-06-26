@@ -132,7 +132,7 @@ def user_info():
     for self_post in self_posts:
        post_list.append(self_post.image)
     
-    return{'res':'OK','profile_photo':self_user.profile_photo, 'following-list':following_list,'post_list':post_list,'follower_list':follower_list} 
+    return{'res':'OK','profile_photo':self_user.profile_photo, 'following_list':following_list,'post_list':post_list,'follower_list':follower_list} 
 
 if __name__ == "__main__":
   app.run(debug=True,port=5000)
