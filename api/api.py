@@ -115,7 +115,7 @@ def upload_post():
 def user_info():
     username = request.get_json()['username']
     self_user = User.query.filter_by(username=username).first()
-    
+
     self_followings= followers.query.filter(followers.username==username).all()
     following_list=[]
     for self_following in self_followings:
@@ -126,7 +126,6 @@ def user_info():
     for self_follower in self_followers:
        follower_list.append(self_follower.username)
        
-    
     self_posts = post.query.filter(post.username==username).all()
     post_list=[]
     for self_post in self_posts:
