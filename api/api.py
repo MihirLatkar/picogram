@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
 from functools import wraps
-
+from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'thisissecret'
@@ -18,24 +18,32 @@ class User(db.Model):
     public_id = db.Column(db.String(50), unique=True)
     username = db.Column(db.String(50))
     password = db.Column(db.String(80))
-    profile_photo = db.Column(db.String(500))
+    profile_photo = db.Column(db.Text)
+    mimetype = db.Column(db.Text)
+    filename = db.column(db.Text)
     admin = db.Column(db.Boolean)
 
-    def __init__(self, username, password ,profile_photo):
+    def __init__(self, username, password ,profile_photo,mimetype,filename):
         self.username = username
         self.password = password
         self.profile_photo = profile_photo
+        self.mimetype = mimetype
+        self.filename = filename
 
 class post(db.Model):
     postNo = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(50))
-    image = db.Column(db.String(500))
+    image = db.Column(db.Text)
+    mimetype = db.Column(db.Text)
+    image_name = db.Column(db.Text)
     discription = db.Column(db.String(200))
     likes=db.Column(db.Integer)
 
-    def __init__(self,username,image,discription,likes):
+    def __init__(self,username,image,mimetype,image_name,discription,likes):
         self.username=username
         self.image=image
+        self.mimetype = mimetype
+        self.image_name = image_name
         self.discription=discription
         self.likes=likes
 
@@ -69,9 +77,10 @@ def signup():
     
     password = request.get_json()['password']
     hashed_password = generate_password_hash(password, method='sha256')
-    profile_photo = '.\images\blank-profile-circle.png'
-
-    user = User(username,hashed_password,profile_photo)
+    profile_photo = request.files.get('default_photo')
+    mimetype = profile_photo.mimetype
+    filename=secure_filename(profile_photo.filename)
+    user = User(username,hashed_password,profile_photo.read(),mimetype,filename)
     
     db.session.add(user)
     db.session.commit()
@@ -90,11 +99,12 @@ def new_following():
 @app.route('/api/login/upload_post', methods=['POST'])
 def upload_post():
     username = request.get_json()['username']
-    image= request.get_json()['image']
+    image = request.files.get('image')
+    mimetype = image.mimetype
+    image_name = secure_filename(image.filename) 
     discription = request.get_json()['discription']
     likes =0
-    
-    new_post = post(username,image,discription,likes)
+    new_post = post(username,image.read(),mimetype,image_name,discription,likes)
     db.session.add(new_post)
     db.session.commit()
     return{'res':'OK'}
@@ -132,6 +142,17 @@ def user_info():
        post_list.append(self_post.image)
     
     return{'res':'OK','profile_photo':self_user.profile_photo, 'following_list':following_list,'post_list':post_list,'follower_list':follower_list} 
+
+@app.route('/api/login/user_info/alter_profile_image',methods=['POST'] )
+def alter_profile_image():
+    username = request.get_json()['username']
+    new_profile = User.query.filter_by(username=username).first()
+    new_pic = request.files.get('new_pic')
+    new_profile.profile_photo = new_pic
+    new_profile.mimetype = new_pic.mimetype
+    new_profile.filename = secure_filename(new_pic.filename)
+    db.session.commit()
+    return{'res':'OK'}
 
 if __name__ == "__main__":
   app.run(debug=True,port=5000)
