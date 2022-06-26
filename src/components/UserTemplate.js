@@ -14,7 +14,7 @@ export default function UserTemplate(props) {
             <div class="container mh-100 min-vh-100">
                 <div class="row">
                     <div class="col" id='sidebar' >
-                        <Profile changeProfile={props.changeProfile} logOut={logOut} />
+                        <Profile changeProfile={props.changeProfile} username={props.username} logOut={logOut} />
                         
                     </div>
                     <div class="col-6 posts" >
