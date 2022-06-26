@@ -116,18 +116,18 @@ def user_info():
     username = request.get_json()['username']
     self_user = User.query.filter_by(username=username).first()
     
-    self_followings= followers.query.filter_by(username=username).all()
+    self_followings= followers.query.filter(followers.username==username).all()
     following_list=[]
     for self_following in self_followings:
        following_list.append(self_following.following_username)
 
-    self_followers = followers.query.filter_by(following_username = username).all()
+    self_followers = followers.query.filter(followers.following_username == username).all()
     follower_list=[]
     for self_follower in self_followers:
        follower_list.append(self_follower.username)
        
     
-    self_posts = post.query.filter_by(username=username).all()
+    self_posts = post.query.filter(post.username==username).all()
     post_list=[]
     for self_post in self_posts:
        post_list.append(self_post.image)
