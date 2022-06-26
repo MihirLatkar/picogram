@@ -60,5 +60,5 @@ export default function Login()
             formData={formData} 
             handleChange={handleChange} />
         )
-    else return (<User setLOggedIn={setLOggedIn} user={user1} />)
+    else return (<User setLOggedIn={setLOggedIn} username={user1} />)
 }

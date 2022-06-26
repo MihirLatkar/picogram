@@ -10,7 +10,7 @@ export default function SubSug(props) {
                     <div className="py-4 p-2">
 
                         <div>
-                            <img src="https://i.imgur.com/EnANUqj.jpg" className="rounded" width="100" />
+                            <img src="https://i.imgur.com/EnANUqj.jpg" className="rounded" alt="" width="100" />
                         </div>
                         <div className="mt-3 d-flex flex-row justify-content-center">
                             <h5>{props.name}</h5>

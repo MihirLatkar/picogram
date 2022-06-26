@@ -1,32 +1,16 @@
 import React from 'react'
-import Post from './Post'
-import Suggestions from './Suggestions'
-import Profile from './Profile'
-
+import UserTemplate from './UserTemplate'
+import ProfilePage from './subComp/ProfilePage';
 export default function User(props) {
-    function logOut() {
-        props.setLOggedIn(false)
+    console.log("in user")
+    const [profile,setProfile] = React.useState(false);
+    function changeProfile()
+    {
+        setProfile(x => !x)
     }
+    if(profile) return (<ProfilePage username={props.username} changeProfile={changeProfile} />)
     return (
-        <div className='user-main'>
-            <div class="container mh-100 min-vh-100">
-                <div class="row">
-                    <div class="col" id='sidebar' >
-                        <Profile logOut={logOut} />
-                        
-                    </div>
-                    <div class="col-6 posts" >
-                        <Post />
-                        <Post />
-                        <Post />
-                        <Post />
-                    </div>
-                    <div class="col" id='sidebar' >
-                        <Suggestions />
-                    </div>
-                </div>
-            </div>
-        </div>
+        <UserTemplate username={props.username} changeProfile={changeProfile} />
     )
 
 }
