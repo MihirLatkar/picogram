@@ -154,13 +154,23 @@ def alter_profile_image():
 def recommendations():
     username = request.get_json()['username']
     recommends = followers.query.filter(followers.username != username).all()
-    i=3
+    
+    my_followings= followers.query.filter(followers.username==username).all()
+    
+    following_list=[]
+    for my_following in my_followings:
+       following_list.append(my_following.following_username)
+    my_following_set = set(following_list)
+    
     recommend_list=[]
     for recommend in recommends:
-        if recommend.following_username != username and i>0:
+        if recommend.following_username != username :
             recommend_list.append(recommend.following_username)
-            i=i-1
-    return {'res':'OK','recommend_list':recommend_list}
+    my_recommend_set = set(recommend_list)
+     
+    recommend_set = my_recommend_set - my_following_set
+    recommend_set = list(recommend_set)
+    return {'res':'OK','recommend_set':recommend_set}
 
         
 if __name__ == "__main__":
