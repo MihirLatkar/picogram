@@ -9,6 +9,8 @@ export default function SignUp()
         confirmPassword: ""
     })
 
+    const [image, setImage] = React.useState(null)
+
     function handleChange(event) {
         const {name, value} = event.target
         setFormData(prevFormData => ({
@@ -16,13 +18,18 @@ export default function SignUp()
             [name]: value
         }))
     }
-    
+    function handleImage(event) {
+        setImage(event.target.files[0])
+        console.log(event.target.files[0])
+    }
     async function signup(user)
     {
         const res = await axios.post('/api/signup',{
             username: user.username,
-            password: user.password
+            password: user.password,
+            default_photo: image
         })
+        console.log(res)
         return res
     }
 
@@ -36,10 +43,11 @@ export default function SignUp()
             setStatus(true)
             return
         }
+        else setStatus(false)
         console.log(formData)
         const user = {
             username: formData.username,
-            password: formData.password
+            password: formData.password,
         }
         console.log(user.username)
         signup(user).then((res) => {
@@ -53,7 +61,7 @@ export default function SignUp()
 
     return(
         <div>
-            <FormSubmit handleChange={handleChange} handleSubmit={handleSubmit} formData={formData} done={done} status={status} />
+            <FormSubmit handleChange={handleChange} image={image} handleImage={handleImage} handleSubmit={handleSubmit} formData={formData} done={done} status={status} />
         </div>
     )
 }
