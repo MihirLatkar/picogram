@@ -109,13 +109,15 @@ def upload_post():
     db.session.commit()
     return{'res':'OK'}
 
-#@app.route('/api/login/fetch_post', methods=['POST'])
-#def fetch_post():
-#    username = request.get_json()['username']
-#    Followers = followers.query.filter(followers.username == username).all()
-#    for follower in Followers:
-#
-#    return{'res':'OK'}
+@app.route('/api/login/fetch_post', methods=['POST'])
+def fetch_post():
+    username = request.get_json()['username']
+    user_Followings = followers.query.filter(followers.username == username).all()
+    following_post=[]
+    for user_following in user_Followings:
+        display_post = post.query.filter(post.username == user_following.following_username).all()
+        following_post = following_post+display_post
+    return{'res':'OK','following_post': following_post }
 
 @app.route('/api/login/user_info',methods=['POST'] )
 def user_info():
