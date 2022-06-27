@@ -12,31 +12,23 @@ export default function Profile(props) {
   const [followers, setFollowers] = React.useState([]);
   const [following, setFollowing] = React.useState([]);
   const [photo, setPhoto] = React.useState("");
-  const [posts, setPosts] = React.useState({});
+  // const [posts, setPosts] = React.useState({});
 
   const [numFollowers, setNumFollowers] = React.useState(100);
   const [numFollowing, setNumFollowing] = React.useState(100);
   const [numPosts, setNumPosts] = React.useState(0);
-  let trigger = {
-    profile_photo: "",
-    follower_list: [],
-    post_list: {},
-    following_list: [],
-  };
-  let k = 0;
+
   React.useEffect(() => {
     userInfo(props.username).then((res) => {
       console.log(res);
       if (res.data.res === "OK") {
-        trigger = res.data;
         setPhoto(res.data.profile_photo);
         setFollowers(res.data.follower_list);
         setFollowing(res.data.following_list);
-        setPosts(res.data.post_list);
+        // setPosts(res.data.post_list);
         setNumFollowers(res.data.follower_list.length);
         setNumFollowing(res.data.following_list.length);
         setNumPosts(Object.keys(res.data.post_list).length);
-        if (k < 3) k++;
       } else {
         return;
       }
@@ -141,7 +133,7 @@ export default function Profile(props) {
       {displayFollowers && (
         <div>
           <div class="list-group">
-            <a href="" class="list-group-item list-group-item-action">
+            <a  class="list-group-item list-group-item-action">
               Followers
             </a>
             {listFollowers}
@@ -161,3 +153,4 @@ export default function Profile(props) {
     </div>
   );
 }
+// rfce
