@@ -18,32 +18,32 @@ class User(db.Model):
     public_id = db.Column(db.String(50), unique=True)
     username = db.Column(db.String(50))
     password = db.Column(db.String(80))
-    profile_photo = db.Column(db.Text)
+    profile_photo = db.Column(db.String(200), nullable =False )
     #mimetype = db.Column(db.Text)
-    filename = db.column(db.Text)
+    #filename = db.column(db.Text)
     admin = db.Column(db.Boolean)
 
-    def __init__(self, username, password ,profile_photo,filename):
+    def __init__(self, username, password ,profile_photo):
         self.username = username
         self.password = password
         self.profile_photo = profile_photo
      #   self.mimetype = mimetype
-        self.filename = filename
+     #   self.filename = filename
 
 class post(db.Model):
     postNo = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(50))
-    image = db.Column(db.Text)
+    image = db.Column(db.String(200),nullable =False)
     #mimetype = db.Column(db.Text)
-    image_name = db.Column(db.Text)
+    #image_name = db.Column(db.Text)
     discription = db.Column(db.String(200))
     likes=db.Column(db.Integer)
 
-    def __init__(self,username,image,image_name,discription,likes):
+    def __init__(self,username,image,discription,likes):
         self.username=username
         self.image=image
         #self.mimetype = mimetype
-        self.image_name = image_name
+        #self.image_name = image_name
         self.discription=discription
         self.likes=likes
 
@@ -77,10 +77,13 @@ def signup():
     
     password = request.get_json()['password']
     hashed_password = generate_password_hash(password, method='sha256')
-    profile_photo = request.files.get('default_photo')
+    profile_photo = request.get_json('default_photo')
     #mimetype = profile_photo.mimetype
-    filename=secure_filename(profile_photo.filename)
-    user = User(username,hashed_password,profile_photo.read(),filename)
+    #filename=secure_filename(profile_photo.filename)
+    if not profile_photo:
+        return "no pic uploaded",400
+    
+    user = User(username,hashed_password,profile_photo)
     
     db.session.add(user)
     db.session.commit()
@@ -99,12 +102,10 @@ def new_following():
 @app.route('/api/login/upload_post', methods=['POST'])
 def upload_post():
     username = request.get_json()['username']
-    image = request.files.get('image')
-    #mimetype = image.mimetype
-    image_name = secure_filename(image.filename) 
+    image = request.get_json('image')
     discription = request.get_json()['discription']
     likes =0
-    new_post = post(username,image.read(),image_name,discription,likes)
+    new_post = post(username,image,discription,likes)
     db.session.add(new_post)
     db.session.commit()
     return{'res':'OK'}
@@ -137,7 +138,7 @@ def user_info():
     self_posts = post.query.filter(post.username==username).all()
     post_list=[]
     for self_post in self_posts:
-       post_list.append(self_post.image)
+       post_list.append(self_post)
     
     return{'res':'OK','profile_photo':self_user.profile_photo, 'following_list':following_list,'post_list':post_list,'follower_list':follower_list} 
 
@@ -145,17 +146,15 @@ def user_info():
 def alter_profile_image():
     username = request.get_json()['username']
     new_profile = User.query.filter_by(username=username).first()
-    new_pic = request.files.get('new_pic')
+    new_pic = request.get_json('new_pic')
     new_profile.profile_photo = new_pic
-    #new_profile.mimetype = new_pic.mimetype
-    new_profile.filename = secure_filename(new_pic.filename)
     db.session.commit()
     return{'res':'OK'}
 
 @app.route('/api/login/recommendations',methods=['POST'] )
 def recommendations():
     username = request.get_json()['username']
-    recommends = followers.query.filter(followers.username != username).all()
+    recommends = User.query.all()
     
     my_followings= followers.query.filter(followers.username==username).all()
     
@@ -166,7 +165,7 @@ def recommendations():
     
     recommend_list=[]
     for recommend in recommends:
-        if recommend.following_username != username :
+        if recommend.username != username :
             recommend_list.append(recommend.following_username)
     my_recommend_set = set(recommend_list)
      
