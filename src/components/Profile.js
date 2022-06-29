@@ -1,5 +1,8 @@
 import React from "react";
 import axios from "axios";
+import {
+  Link
+} from "react-router-dom";
 import ListItem from "./subComp/ListItem";
 export default function Profile(props) {
   async function userInfo(name) {
@@ -118,13 +121,14 @@ export default function Profile(props) {
                 </div>
               </li>
               <li>
+                <Link to="/">
                 <button
                   type="button"
                   className="btn btn-outline-danger"
-                  onClick={props.logOut}
                 >
                   Log Out
                 </button>
+                </Link>
               </li>
             </ul>
           </div>
