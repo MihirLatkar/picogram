@@ -16,7 +16,7 @@ export default function SubSug(props) {
     console.log(res);
     return res;
   }
-  const [photo, setPhoto] = React.useState("");
+  // const [photo, setPhoto] = React.useState("");
   // const [posts, setPosts] = React.useState({});
 
   const [numFollowers, setNumFollowers] = React.useState(100);

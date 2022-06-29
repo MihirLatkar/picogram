@@ -18,30 +18,30 @@ class User(db.Model):
     public_id = db.Column(db.String(50), unique=True)
     username = db.Column(db.String(50))
     password = db.Column(db.String(80))
-    profile_photo = db.Column(db.String(200), nullable =False )
+    # profile_photo = db.Column(db.String(200), nullable =False )
     #mimetype = db.Column(db.Text)
     #filename = db.column(db.Text)
     admin = db.Column(db.Boolean)
 
-    def __init__(self, username, password ,profile_photo):
+    def __init__(self, username, password): #,profile_photo
         self.username = username
         self.password = password
-        self.profile_photo = profile_photo
+        # self.profile_photo = profile_photo
      #   self.mimetype = mimetype
      #   self.filename = filename
 
 class post(db.Model):
     postNo = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(50))
-    image = db.Column(db.String(200),nullable =False)
+    # image = db.Column(db.String(200),nullable =False)
     #mimetype = db.Column(db.Text)
     #image_name = db.Column(db.Text)
     discription = db.Column(db.String(200))
     likes=db.Column(db.Integer)
 
-    def __init__(self,username,image,discription,likes):
+    def __init__(self,username,discription,likes): #image
         self.username=username
-        self.image=image
+        # self.image=image
         #self.mimetype = mimetype
         #self.image_name = image_name
         self.discription=discription
@@ -77,13 +77,13 @@ def signup():
     
     password = request.get_json()['password']
     hashed_password = generate_password_hash(password, method='sha256')
-    profile_photo = request.get_json('default_photo')
+    # profile_photo = request.get_json('default_photo')
     #mimetype = profile_photo.mimetype
     #filename=secure_filename(profile_photo.filename)
-    if not profile_photo:
-        return "no pic uploaded",400
+    # if not profile_photo:
+    #     return "no pic uploaded",400
     
-    user = User(username,hashed_password,profile_photo)
+    user = User(username,hashed_password)#,profile_photo
     
     db.session.add(user)
     db.session.commit()
@@ -102,10 +102,10 @@ def new_following():
 @app.route('/api/login/upload_post', methods=['POST'])
 def upload_post():
     username = request.get_json()['username']
-    image = request.get_json('image')
+    # image = request.get_json('image')
     discription = request.get_json()['discription']
     likes =0
-    new_post = post(username,image,discription,likes)
+    new_post = post(username,discription,likes) #,image
     db.session.add(new_post)
     db.session.commit()
     return{'res':'OK'}
@@ -140,7 +140,7 @@ def user_info():
     for self_post in self_posts:
        post_list.append(self_post)
     
-    return{'res':'OK','profile_photo':self_user.profile_photo, 'following_list':following_list,'post_list':post_list,'follower_list':follower_list} 
+    return{'res':'OK', 'following_list':following_list,'post_list':post_list,'follower_list':follower_list} #,'profile_photo':self_user.profile_photo
 
 @app.route('/api/login/user_info/alter_profile_image',methods=['POST'] )
 def alter_profile_image():
