@@ -166,7 +166,7 @@ def recommendations():
     recommend_list=[]
     for recommend in recommends:
         if recommend.username != username :
-            recommend_list.append(recommend.following_username)
+            recommend_list.append(recommend.username)
     my_recommend_set = set(recommend_list)
      
     recommend_set = my_recommend_set - my_following_set
