@@ -25,7 +25,7 @@ export default function FormLogin(props) {
                     <div className="mb-3">
                         <label htmlFor="InputPassword1" className="form-label">Password</label>
                         <input 
-                            type="password" 
+                            type={props.show? "text":"password"} 
                             name='password'
                             className="form-control" 
                             id="InputPassword1"

@@ -1,7 +1,9 @@
 import React from "react";
 import User from "../User";
 import ListItem from "./ListItem";
+import Post from "../Post";
 import axios from "axios";
+import img from "../../images/blank1.png";
 export default function ProfilePage(props) {
   console.log("in Profile page");
   const [goBack, setGoBack] = React.useState(false);
@@ -15,20 +17,22 @@ export default function ProfilePage(props) {
     console.log(res);
     return res;
   }
+
   const [followers, setFollowers] = React.useState([]);
   const [following, setFollowing] = React.useState([]);
-  const [photo, setPhoto] = React.useState("");
-  const [posts, setPosts] = React.useState({});
+  // const [photo, setPhoto] = React.useState("");
+  // const [posts, setPosts] = React.useState({});
 
   const [numFollowers, setNumFollowers] = React.useState(100);
   const [numFollowing, setNumFollowing] = React.useState(100);
   const [numPosts, setNumPosts] = React.useState(0);
-  
+  const [posts, setPosts] = React.useState([]);
+
   React.useEffect(() => {
     userInfo(props.username).then((res) => {
       console.log(res);
       if (res.data.res === "OK") {
-        setPhoto(res.data.profile_photo);
+        // setPhoto(res.data.profile_photo);
         setFollowers(res.data.follower_list);
         setFollowing(res.data.following_list);
         setPosts(res.data.post_list);
@@ -42,7 +46,7 @@ export default function ProfilePage(props) {
 
     console.log(numFollowers);
     console.log(numFollowing);
-    console.log(photo);
+    // console.log(photo);
   }, []);
 
   const [displayFollowers, setDisplayFollowers] = React.useState(false);
@@ -60,8 +64,11 @@ export default function ProfilePage(props) {
   const listFollowing = following.map((x) => <ListItem item={x} />);
   if (goBack) return <User username={props.username} />;
   return (
-    <div>
-      <div className="p-2 bd-highlight">
+    <div className="user-main">
+      <div class="container mh-100 min-vh-100">
+        <div class="row">
+          <div class="col" id="sidebar">
+          <div className="align-items-center p-2 bd-highlight">
         <div>
           <div className="container height-100 d-flex justify-content-center align-items-center">
             <div className="card text-center">
@@ -69,7 +76,7 @@ export default function ProfilePage(props) {
                 <div>
                   <img
                     onClick={props.changeProfile}
-                    src={photo}
+                    src={img}
                     alt=""
                     className="rounded"
                     width="100"
@@ -129,7 +136,7 @@ export default function ProfilePage(props) {
                       Go Back
                     </button>
                   </li>
-                  <li>
+                  {/* <li>
                     <div className="input-group mb-3">
                       <div className="input-group-prepend">
                         <span className="input-group-text">
@@ -151,10 +158,10 @@ export default function ProfilePage(props) {
                         </label>
                       </div>
                     </div>
-                    {/* <button type="file" onChange={uploadPhoto}>
+                     <button type="file" onChange={uploadPhoto}>
                       Upload Profile Photo
-                    </button> */}
-                  </li>
+                    </button> 
+                  </li> */}
                 </ul>
               </div>
             </div>
@@ -181,7 +188,15 @@ export default function ProfilePage(props) {
           )}
         </div>
       </div>
-      <div className="p-2 flex-grow-1 bd-highlight">Flex item</div>
+          </div>
+          <div class="col-6 posts">
+          {posts.map((x) => (
+            <Post username={x.username} postdes={x.discription} />
+          ))}
+          </div>
+        </div>
+      </div>
     </div>
+    
   );
 }

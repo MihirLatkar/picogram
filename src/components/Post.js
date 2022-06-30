@@ -1,7 +1,8 @@
 import React from "react";
-// import profile from './tmp-img/profile-pic1.jpg'
+import profile from './tmp-img/profile-pic1.jpg'
 import notFilled from '../images/not-filled-heart.png'
 import Filled from '../images/filled-heart.png'
+import img from '../images/blank1.png'
 export default function Post(props) {
 	const [like,setLike] = React.useState(false)
 	const [nLikes,setNLikes] = React.useState(0)
@@ -15,11 +16,11 @@ export default function Post(props) {
 		<div>
 			<div className="post">
 				<div className="post-title">
-					<img src={props.userpic} className="post-profile-pic" alt="profile pic" />
+					<img src={img} className="post-profile-pic" alt="profile pic" />
 					<h5 style={{padding: 20}} >{props.username}</h5>
 				</div>
 				<div className="post-content">
-						<img src={props.postpic} className="post-content-pic" alt="profile pic" onDoubleClick={changeLike} />
+						<img src={profile} className="post-content-pic" alt="profile pic" onDoubleClick={changeLike} />
 				</div>
 				<div className="post-description">
 					<p>{props.postdes}</p>

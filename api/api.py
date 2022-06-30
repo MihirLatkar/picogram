@@ -4,6 +4,7 @@ import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
+from flask import jsonify
 from functools import wraps
 from werkzeug.utils import secure_filename
 app = Flask(__name__)
@@ -117,7 +118,8 @@ def fetch_post():
     following_post=[]
     for user_following in user_Followings:
         display_post = post.query.filter(post.username == user_following.following_username).all()
-        following_post = following_post+display_post
+        for p in display_post:
+            following_post.append(dict(username=p.username,discription=p.discription,likes=p.likes))
     return{'res':'OK','following_post': following_post }
 
 @app.route('/api/login/user_info',methods=['POST'] )
@@ -138,7 +140,10 @@ def user_info():
     self_posts = post.query.filter(post.username==username).all()
     post_list=[]
     for self_post in self_posts:
-       post_list.append(self_post)
+        temp = dict(username=self_post.username,discription=self_post.discription,likes=self_post.likes)
+        print("###########################")
+        print(temp)
+        post_list.append(temp)
     
     return{'res':'OK', 'following_list':following_list,'post_list':post_list,'follower_list':follower_list} #,'profile_photo':self_user.profile_photo
 
