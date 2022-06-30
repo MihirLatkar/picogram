@@ -58,7 +58,8 @@ export default function Login()
             <FormLogin 
             handleSubmit={handleSubmit} 
             formData={formData} 
-            handleChange={handleChange} />
+            handleChange={handleChange}
+            show={formData.showPassword} />
         )
     else return (<User setLOggedIn={setLOggedIn} username={user1} />)
 }

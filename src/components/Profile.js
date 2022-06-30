@@ -1,8 +1,6 @@
 import React from "react";
 import axios from "axios";
-import {
-  Link
-} from "react-router-dom";
+import img from "../images/blank1.png"
 import ListItem from "./subComp/ListItem";
 export default function Profile(props) {
   async function userInfo(name) {
@@ -31,7 +29,7 @@ export default function Profile(props) {
         // setPosts(res.data.post_list);
         setNumFollowers(res.data.follower_list.length);
         setNumFollowing(res.data.following_list.length);
-        setNumPosts(Object.keys(res.data.post_list).length);
+        setNumPosts(res.data.post_list.length);
       } else {
         return;
       }
@@ -69,7 +67,7 @@ export default function Profile(props) {
             <div>
               <img
                 onClick={props.changeProfile}
-                src={photo}
+                src={img}
                 alt=""
                 className="rounded"
                 width="100"
@@ -121,14 +119,14 @@ export default function Profile(props) {
                 </div>
               </li>
               <li>
-                <Link to="/">
+                <a href="/">
                 <button
                   type="button"
                   className="btn btn-outline-danger"
                 >
                   Log Out
                 </button>
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
