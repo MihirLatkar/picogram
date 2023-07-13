@@ -18,6 +18,7 @@ npm install
 python3 -m venv venv # use "py -m venv venv" for windows
 ./venv/Scripts/activate
 pip install -r requirements.txt
+pip install greenlet
 ```
 
 ## Start Servers
