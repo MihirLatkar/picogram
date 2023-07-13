@@ -20,16 +20,16 @@ class User(db.Model):
     username = db.Column(db.String(50))
     password = db.Column(db.String(80))
     # profile_photo = db.Column(db.String(200), nullable =False )
-    #mimetype = db.Column(db.Text)
-    #filename = db.column(db.Text)
+    # mimetype = db.Column(db.Text)
+    # filename = db.column(db.Text)
     admin = db.Column(db.Boolean)
 
     def __init__(self, username, password): #,profile_photo
         self.username = username
         self.password = password
-        # self.profile_photo = profile_photo
-     #   self.mimetype = mimetype
-     #   self.filename = filename
+     #  self.profile_photo = profile_photo
+     #  self.mimetype = mimetype
+     #  self.filename = filename
 
 class post(db.Model):
     postNo = db.Column(db.Integer,primary_key=True)
@@ -56,7 +56,7 @@ class followers(db.Model):
     def __init__(self, username, following_username):
         self.username = username
         self.following_username = following_username
-            
+db.create_all()           
 @app.route('/api/login', methods=['POST'])
 def login():
     username = request.get_json()['username']
@@ -85,7 +85,6 @@ def signup():
     #     return "no pic uploaded",400
     
     user = User(username,hashed_password)#,profile_photo
-    
     db.session.add(user)
     db.session.commit()
     return{'res':'OK','username':username} 
