@@ -38,7 +38,8 @@ export default function UserTemplate(props) {
           <div class="col-6 posts">
             <UploadPost username={props.username} />
             {posts.map((x) => (
-              <Post username={x.username} postdes={x.discription} />
+             // <Post username={x.username} postdes={x.description}/>
+              <Post username={x.username} image={x.image} postdes={x.description} />
             ))}
           </div>
           <div class="col" id="sidebar">

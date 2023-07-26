@@ -7,10 +7,15 @@ import datetime
 from flask import jsonify
 from functools import wraps
 from werkzeug.utils import secure_filename
+from base64 import b64encode
+from flask_cors import CORS
+
+
 app = Flask(__name__)
+CORS(app)
 
 app.config['SECRET_KEY'] = 'thisissecret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pico.db'
 
 db = SQLAlchemy(app)
 
@@ -22,7 +27,6 @@ class User(db.Model):
     # profile_photo = db.Column(db.String(200), nullable =False )
     # mimetype = db.Column(db.Text)
     # filename = db.column(db.Text)
-    admin = db.Column(db.Boolean)
 
     def __init__(self, username, password): #,profile_photo
         self.username = username
@@ -34,18 +38,16 @@ class User(db.Model):
 class post(db.Model):
     postNo = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(50))
-    # image = db.Column(db.String(200),nullable =False)
+    encoded_image = db.Column(db.LargeBinary,nullable =False)
     #mimetype = db.Column(db.Text)
     #image_name = db.Column(db.Text)
-    discription = db.Column(db.String(200))
+    description = db.Column(db.String(200))
     likes=db.Column(db.Integer)
 
-    def __init__(self,username,discription,likes): #image
+    def __init__(self,username,encoded_image,description,likes):
         self.username=username
-        # self.image=image
-        #self.mimetype = mimetype
-        #self.image_name = image_name
-        self.discription=discription
+        self.encoded_image=encoded_image
+        self.description=description
         self.likes=likes
 
 class followers(db.Model):
@@ -56,7 +58,9 @@ class followers(db.Model):
     def __init__(self, username, following_username):
         self.username = username
         self.following_username = following_username
+
 db.create_all()           
+
 @app.route('/api/login', methods=['POST'])
 def login():
     username = request.get_json()['username']
@@ -93,33 +97,49 @@ def signup():
 def new_following():
     username = request.get_json()['username']
     following_username = request.get_json()['following_username']
-        
     new_following = followers(username,following_username)
     db.session.add(new_following)
     db.session.commit()
     return{'res':'OK'}
 
+#getting error 400 bad request for this route
+
 @app.route('/api/login/upload_post', methods=['POST'])
 def upload_post():
-    username = request.get_json()['username']
-    # image = request.get_json('image')
-    discription = request.get_json()['discription']
-    likes =0
-    new_post = post(username,discription,likes) #,image
+    username = request.form.get('username')
+    description = request.form.get('description')
+    image = request.files.get('image')
+    #raise Exception('something went wrong')
+    image_data = image.read()
+    #encoded_image = b64encode(image_data).decode('utf-8')
+    likes = 0
+    new_post = post(username,image_data,description,likes) 
+    #new_post = post(username,description,likes)
     db.session.add(new_post)
     db.session.commit()
     return{'res':'OK'}
 
 @app.route('/api/login/fetch_post', methods=['POST'])
+
+@app.route('/api/login/fetch_post', methods=['POST'])
 def fetch_post():
     username = request.get_json()['username']
     user_Followings = followers.query.filter(followers.username == username).all()
-    following_post=[]
+    following_post = []
+
     for user_following in user_Followings:
-        display_post = post.query.filter(post.username == user_following.following_username).all()
-        for p in display_post:
-            following_post.append(dict(username=p.username,discription=p.discription,likes=p.likes))
-    return{'res':'OK','following_post': following_post }
+        display_posts = post.query.filter(post.username == user_following.following_username).all()
+
+        for p in display_posts:
+            image_data_base64 = b64encode(p.encoded_image).decode('utf-8') 
+            following_post.append({
+                'username': p.username,
+                'image': image_data_base64,
+                'description': p.description,
+                'likes': p.likes
+            })
+            
+    return jsonify({'res': 'OK', 'following_post': following_post})
 
 @app.route('/api/login/user_info',methods=['POST'] )
 def user_info():
@@ -139,7 +159,7 @@ def user_info():
     self_posts = post.query.filter(post.username==username).all()
     post_list=[]
     for self_post in self_posts:
-        temp = dict(username=self_post.username,discription=self_post.discription,likes=self_post.likes)
+        temp = dict(username=self_post.username,description=self_post.description,likes=self_post.likes)
         print("###########################")
         print(temp)
         post_list.append(temp)

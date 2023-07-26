@@ -21,6 +21,10 @@ pip install -r requirements.txt
 pip install greenlet
 ```
 
+Use this to avoid error caused because of nodejs version
+
+https://stackoverflow.com/questions/74726224/opensslerrorstack-error03000086digital-envelope-routinesinitialization-e
+
 ## Start Servers
 
 ### React
